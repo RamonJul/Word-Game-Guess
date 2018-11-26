@@ -1,0 +1,11 @@
+h1, h3, p{
+    text-align: center;
+    width:100%;
+}
+
+.btn{
+    z-index: 1;
+}
+.body{
+    background-color: chocolate;
+}
