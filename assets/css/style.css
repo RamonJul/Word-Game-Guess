@@ -1,11 +1,143 @@
+* {box-sizing: border-box; }
+/* global */
+body{
+    background-image: url(../images/dark-grey-terrazzo.png);
+    background-repeat: repeat; 
+    font-family: 'Patua One', cursive;
+    color: azure;
+    
+}
 h1, h3, p{
     text-align: center;
     width:100%;
 }
+h1{
+font-family: 'Black Han Sans', sans-serif;
 
-.btn{
-    z-index: 1;
 }
-.body{
-    background-color: chocolate;
+.row{
+    width: 100%;
+    text-align: center;
+    /* border: 5px solid red; */
+    margin-right:0;
+    margin-left:0;
+}
+.h3 {
+    text-align: center;
+  
+}
+.Title,.TitleScore, .Guesses, .btn, .Score, .TitleGuesses{
+    margin: 4% 0;
+}
+
+
+nav{
+    justify-content: center;
+}
+/* body  */
+.container{
+    min-width: 960px !important;
+    width: 100%;
+  
+    
+}
+.box{
+    margin-top: 4%;
+    background-color:navy;
+    border: 4px solid white;
+    border-radius: 15px;
+    padding: 0;
+    width: 100%;
+}
+/* left division */
+.leftdiv{
+
+    margin:2%;
+    border: 3px solid lightblue;
+    border-radius: 15px;
+    
+}
+.Title{
+    height: 75px;   
+    margin:3% 0;
+}
+.word{
+    height: 24px;
+}
+.Guesses{
+    height:25px;
+}
+.Score{
+    height: 24px;
+}
+.message{
+    height: 30px;
+}
+
+.col-md-6{
+
+    padding-right:0;
+    padding-left:0;
+}
+#livetitle{
+    margin-bottom: 0 !important;
+}
+
+.lvl1{
+    justify-content: space-evenly;
+}
+.life{
+    margin-top: 6%;
+    font-size: 300%;
+}
+.resetbtn{
+    opacity: 0 ;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+
+
+
+/* right div */
+.rightdiv{
+    margin: 2%;
+    border: 3px solid lightblue;
+    border-radius: 15px;
+ 
+}
+canvas{
+    width:100%;
+    z-index:-1;
+    
+}
+#spin{
+    z-index:-50;
+    opacity: 0;
+}
+
+
+/* bottom row */
+.bottom{
+    margin: 5% 0;
+    justify-content: space-evenly;
+    
+}
+
+
+.list-group-item{
+    background-color: navy !important;
 }
