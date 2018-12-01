@@ -137,8 +137,9 @@ function gameplay() {
     var guessnumb= event.which;
     
     if (lettercheck(guess) === true && 65<=guessnumb && 95>=guessnumb ) {
+        guess=guess.toLowerCase();
         choices.push(guess);//logs the guess letter
-      
+            guess=guess.toLowerCase();
         //checks the guess
         for (var j = 0; j < word.length; j++) {
             if (guess === word.charAt(j)) {
