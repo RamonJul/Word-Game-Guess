@@ -1,13 +1,12 @@
-// word slection
+// word slection and initilization for but loss and win
 function initialize() {
-    // var c=10;
     while(true){
     var number=Math.floor(Math.random() * word_list.length);   
     word = word_list[number];
- 
+    console.log(available);
     if( available[number]!=0){
     for (var i = 0; i < word.length; i++) {
-        // c=9;
+      
         letter.push("_");
         console.log(letter[i]);
     }
@@ -17,6 +16,19 @@ function initialize() {
         break;
     }
 }
+    reset.style.opacity= 0;
+    reset.disabled= true;
+    document.getElementById("canvas").style.zIndex = "1";
+    strt.style.opacity = 0;
+    strt.disabled=true;
+    spinner.style.opacity = 1;
+    spinner.disabled=false;
+    ins.textContent = "Guess the Word";
+    endtext.textContent = "";
+    statustext.textContent = letter;
+    lifetext.textContent = life;
+    guesses.textContent = choices;
+    totalscore.textContent = score;
 }
 //checks if letters was used
 function lettercheck(key) {
@@ -26,42 +38,60 @@ function lettercheck(key) {
         if (key === choices[k]) {
             good = false;
         }
-
     }
-   
     return good;
 }
 // checks the game status
-//word is a string while letter is the array
-function status(){
+function state(){
     
     var status = true
     for (var i = 0; i < letter.length; i++) {
         if (word.charAt(i) !== letter[i]) {
             status = false;
         }
-    }
+      
+    };
     return status;
 }
-
-
-function reset() {
+// win or lose events
+function end_events(result){
     letter = [];
     choices = [];
-}
-//global variable list
-var word_list = ["cat", "dog"];
-var word; // the word that will be guessed
-var letter = [];// blank array where we word will be stored
-var life = 6; //how many lives
-var choices = []; //list guessed letters
-var score = 0;// reset when lost
-var highscre=0;
-var available=[];
+    reset.style.opacity= 1;
+    reset.disabled=false;
+    if(result===true){
+        statustext.textContent =  word;
+        ins.textContent = "Good Job go to the next one";
+        endtext.textContent = "YOU WIN";
+        reset.textContent="Next One"
+    }
+    else if(result===false){
+        endtext.textContent = "YOU LOSE";
+        statustext.textContent = "Word was "+ word;
+        ins.textContent = "Nice try";
+        reset.textContent="Try Again"
+    }
+};
+
+// sets the availability array
+function list_reset(){
+    available=[]
 for (var j=0; j< word_list.length;j++){
     available.push(1);
-}
-// console.log(available.length)
+};
+};
+
+//global variable list
+var word_list = ["cat", "dogs"];
+var word; // the word that will be guessed
+var letter = [];// blank array where the word will be stored
+var life = 6; //how many lives reset on loss
+var choices = []; //list guessed letters
+var score = 0;// reset when loss
+var highscre=0;
+var available=[];// availability of a word
+list_reset();
+
 ///WHEEL SECTION
 var options = [100, 10, 25, 250, 30, 1000, 1, 200, 45, 500, 5, 20, 1, 1000000, 1, 350, 5, 99];
 
@@ -87,57 +117,44 @@ var guesses = document.getElementById("guess-atempts");
 var ins = document.getElementById("instruction");
 var highscore=document.getElementById("highscore")
 var totalscore=document.getElementById("score")
-var canvas = document.getElementById("canvas");
+var reset =document.getElementById("reset");
+var strt=document.getElementById("btn");
+var spinner= document.getElementById("spin");
 //initialize
 
 document.getElementById("canvas").style.zIndex = "-1";
-// document.getElementById("reset").addEventListener("click", game_start);
 
-function game_start() {
-    reset();
-    document.getElementById("reset").style.opacity= 0;
-    document.getElementById("reset").disabled= true;
-    document.getElementById("canvas").style.zIndex = "1";
-    document.getElementById("btn").style.opacity = 0;
-    document.getElementById("btn").disabled=true;
-    document.getElementById("spin").style.opacity = 1;
-    document.getElementById("spin").disabled=false;
-    ins.textContent = "Guess the Word";
-    endtext.textContent = "";
+
+function main() {
+    
     initialize();
-
-    statustext.textContent = letter;
-    lifetext.textContent = life;
-    guesses.textContent = choices;
-    totalscore.textContent = score;
-   
-   
-
     //button is pressed
     document.onkeyup = function (event) {
        
         if (spun === true) {
             spun = false;
-            gameplay();
+            
+            gameplay(event);
            
         }
 
         else {
             endtext.textContent="Spin that wheel";
-            console.log("spin the wheel")
+          
         }
 
     }
 };
 
-function gameplay() {
+function gameplay(event) {
     // acceptable_entries.test(guess)
     var correct = false;//
     var guess = event.key;
     var guessnumb= event.which;
     
     if (lettercheck(guess) === true && 65<=guessnumb && 95>=guessnumb ) {
-        guess=guess.toLowerCase();
+        spinner.disabled=false;
+        guess=guess.toLowerCase();// to allow uppercase entries
         choices.push(guess);//logs the guess letter
             guess=guess.toLowerCase();
         //checks the guess
@@ -146,15 +163,15 @@ function gameplay() {
                 //pushes the guess into the blank array
                 letter[j] = guess;
                 correct = true;
-                score += text;
+                score += text;// adding to score
               
             }
            
         };
         totalscore.textContent = score;
             //when wrong
-        if (correct === false) {
-            life--;
+            if (correct === false) {
+                life--;
             
         }
 
@@ -169,29 +186,24 @@ function gameplay() {
        
     }
 
-
     //life checker when life is zero game ends and reveal world
-   
-    if (life === 0) {
-        endtext.textContent = "YOU LOSE";
-        score=0;
-        life=6;
-        document.getElementById("reset").style.opacity= 1;
-        document.getElementById("reset").disabled=false;
-        statustext.textContent = "Word was "+ word;
-        document.getElementById("reset").textContent="Try Again"
-    }
+        if (life === 0) {
+            var win=false  
+            score=0;
+            life=6;
+        list_reset();
+        end_events(false);
+        }
     //checks if you won
-    if (status()) {
-        endtext.textContent = "YOU WIN";
-        document.getElementById("reset").style.opacity= 1;
-        document.getElementById("reset").disabled=false;
-        document.getElementById("reset").textContent="Next Word"
-        
-    }
-    if(score> highscre){
-        highscre=score
-         highscore.textContent =highscre ;
+      
+        else if (state()) {
+            var win=true
+            
+            end_events(true);
+         };
+        if(score> highscre){// checks for a new highscore
+            highscre=score
+            highscore.textContent =highscre ;
      }
 
 
@@ -288,6 +300,7 @@ function spin() {
     spinTime = 0;
     spinTimeTotal = Math.random() * 3 + 4 * 1000;
     rotateWheel();
+    spinner.disabled=true;
     spun = true;
     endtext.textContent="Pick a letter";
  
