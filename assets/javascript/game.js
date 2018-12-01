@@ -1,29 +1,26 @@
 // word slection
 function initialize() {
-    var c=10
-    // while(c===10){
+    // var c=10;
+    while(true){
     var number=Math.floor(Math.random() * word_list.length);   
     word = word_list[number];
-    console.log(word);
-    console.log(word.length);
-    // console.log(available)
-    console.log(c);
-    // if( available[number]!=0){
+ 
+    if( available[number]!=0){
     for (var i = 0; i < word.length; i++) {
+        // c=9;
         letter.push("_");
         console.log(letter[i]);
     }
-    //     available[number]=0;
-    //     console.log(available[number]);
-    //     console.log(available)
-    //     c=9;
-    //     console.log (c);
-    // }
+        available[number]=0;
+        console.log(available[number]);
+        console.log(available)
+        break;
+    }
 }
-// }
+}
 //checks if letters was used
 function lettercheck(key) {
-    console.log(key);
+ 
     var good = true;
     for (var k = 0; k < choices.length; k++) {
         if (key === choices[k]) {
@@ -31,16 +28,16 @@ function lettercheck(key) {
         }
 
     }
-    console.log(good);
+   
     return good;
 }
 // checks the game status
-//answ is a string while attempt is the array
-function status(answ, attempt) {
+//word is a string while letter is the array
+function status(){
     
     var status = true
-    for (var i = 0; i < attempt.length; i++) {
-        if (answ.charAt(i) !== attempt[i]) {
+    for (var i = 0; i < letter.length; i++) {
+        if (word.charAt(i) !== letter[i]) {
             status = false;
         }
     }
@@ -56,14 +53,14 @@ function reset() {
 var word_list = ["cat", "dog"];
 var word; // the word that will be guessed
 var letter = [];// blank array where we word will be stored
-var life = 1; //how many lives
+var life = 6; //how many lives
 var choices = []; //list guessed letters
 var score = 0;// reset when lost
 var highscre=0;
-// var available=[];
-// for (var j=0; j< word_list.length;j++){
-//     available.push(1);
-// }
+var available=[];
+for (var j=0; j< word_list.length;j++){
+    available.push(1);
+}
 // console.log(available.length)
 ///WHEEL SECTION
 var options = [100, 10, 25, 250, 30, 1000, 1, 200, 45, 500, 5, 20, 1, 1000000, 1, 350, 5, 99];
@@ -94,7 +91,7 @@ var canvas = document.getElementById("canvas");
 //initialize
 
 document.getElementById("canvas").style.zIndex = "-1";
-document.getElementById("reset").addEventListener("click", game_start);
+// document.getElementById("reset").addEventListener("click", game_start);
 
 function game_start() {
     reset();
@@ -113,12 +110,12 @@ function game_start() {
     lifetext.textContent = life;
     guesses.textContent = choices;
     totalscore.textContent = score;
-    console.log(spun)
+   
    
 
     //button is pressed
     document.onkeyup = function (event) {
-        console.log(event.which);
+       
         if (spun === true) {
             spun = false;
             gameplay();
@@ -138,10 +135,10 @@ function gameplay() {
     var correct = false;//
     var guess = event.key;
     var guessnumb= event.which;
-    console.log(choices[0]);
+    
     if (lettercheck(guess) === true && 65<=guessnumb && 95>=guessnumb ) {
         choices.push(guess);//logs the guess letter
-        console.log(guess);
+      
         //checks the guess
         for (var j = 0; j < word.length; j++) {
             if (guess === word.charAt(j)) {
@@ -149,15 +146,15 @@ function gameplay() {
                 letter[j] = guess;
                 correct = true;
                 score += text;
-                console.log(score);
+              
             }
-            console.log(letter[j]);
+           
         };
-        //when wrong
         totalscore.textContent = score;
+            //when wrong
         if (correct === false) {
             life--;
-            console.log(life);
+            
         }
 
         statustext.textContent = letter;
@@ -168,7 +165,7 @@ function gameplay() {
     else {
         endtext.textContent="Try again";
         spun=true;
-        console.log("Try another letter");
+       
     }
 
 
@@ -177,13 +174,14 @@ function gameplay() {
     if (life === 0) {
         endtext.textContent = "YOU LOSE";
         score=0;
+        life=6;
         document.getElementById("reset").style.opacity= 1;
         document.getElementById("reset").disabled=false;
-        statustext.textContent = "Word was"+ word;
+        statustext.textContent = "Word was "+ word;
         document.getElementById("reset").textContent="Try Again"
     }
     //checks if you won
-    else if (status(word, letter)) {
+    if (status()) {
         endtext.textContent = "YOU WIN";
         document.getElementById("reset").style.opacity= 1;
         document.getElementById("reset").disabled=false;
@@ -246,7 +244,7 @@ function drawRouletteWheel() {
 
         for (var i = 0; i < options.length; i++) {
             var angle = startAngle + i * arc;
-            //ctx.fillStyle = colors[i];
+        
             ctx.fillStyle = getColor(i, options.length);
 
             ctx.beginPath();
@@ -291,7 +289,7 @@ function spin() {
     rotateWheel();
     spun = true;
     endtext.textContent="Pick a letter";
-    console.log(spun)
+ 
 }
 
 function rotateWheel() {
